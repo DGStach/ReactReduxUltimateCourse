@@ -1,34 +1,36 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
-function App() {
+export default function App(){
+
     const [advice, setadvice] = useState("");
-    const [count, setCount] = useState(0);
-  async function getAdvice(){
-    const res = await fetch("https://api.adviceslip.com/advice")
-    const data = await  res.json()
-      setadvice(data.slip.advice);
-    console.log("ile razy");
-    setCount((c)=>c+1);
-  }
-  useEffect(function (){
-      getAdvice();
-  },[]);
+    const [count, setcount] = useState(0);
 
-  return (
-    <div className="App">
-      <h1>{advice}</h1>
-      <button onClick={getAdvice}>Get advice</button>
-    <Message count = {count}/>
-    </div>
-  );
-}
+    async function getAdvice(){
+        const res = await fetch("https://api.adviceslip.com/advice")
+        const data = await res.json()
+        setadvice(data.slip.advice);
+        setcount((c)=>c+1);
+    }
 
-function Message(props){
-    return (
-        <p>
-            You have read <strong>{props.count}</strong> pieces of advaice.
-        </p>
+    useEffect(()=>{
+        getAdvice()
+    },[])
+
+    return(
+        <div>
+            <h1>
+                {advice}
+            </h1>
+            <button onClick={getAdvice}>Get Advice</button>
+            <Count count = {count}/>
+        </div>
     )
 }
 
-export default App;
+function Count(props){
+    return (
+        <div>
+            <p>You use advice <strong>{props.count}</strong> times</p>
+        </div>
+        )
+}
